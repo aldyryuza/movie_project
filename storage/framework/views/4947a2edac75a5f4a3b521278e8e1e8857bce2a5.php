@@ -1,0 +1,116 @@
+
+<?php
+$title = 'Data - Karyawan';
+?>
+
+<?php $__env->startSection('content'); ?>
+    <br>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-success btn-sm float-end mx-6 " data-bs-toggle="modal"
+        data-bs-target="#exampleModal">
+        <i class="fas fa-plus"></i> Tambah
+    </button>
+    <br><br>
+    <div class="card">
+        <div class="card-body">
+            <p class="fw-bold fs-4">Data Karyawan</p>
+
+
+
+            <table id="dataKaryawan" class="table table-hover table-responsive-md table-bordered">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Karyawan</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Opsi</th>
+                </thead>
+                <tbody>
+
+                    
+
+                    <?php $__currentLoopData = $karyawan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $r): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <tr>
+                            <td><?php echo e($loop->iteration); ?></td>
+                            <td><?php echo e($r->nama_karyawan); ?></td>
+                            <td><?php echo e($r->username); ?></td>
+                            <td><?php echo e($r->password); ?></td>
+                            <td>
+                                <a href="/karyawan/edit/<?php echo e($r->id); ?>">
+                                    <span class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</span>
+                                </a>
+
+
+
+                                <form action="/karyawan/delete/<?php echo e($r->id); ?>" method="post" class="d-inline"
+                                    onsubmit="return confirm('Yakin hapus data ?')">
+                                    <?php echo method_field('delete'); ?>
+                                    <?php echo csrf_field(); ?>
+
+                                    <input type="hidden" name="id" value="<?php echo e($r->id); ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i>
+                                        Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah Data Karyawan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/karyawan/upload" method="post" enctype="multipart/form-data">
+                        <?php echo csrf_field(); ?>
+                        <div class=" modal-body">
+                            <div class="mb-3">
+                                <label for="nama_karyawan">Nama Karyawan</label>
+                                <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan"
+                                    placeholder="....">
+                            </div>
+                            <div class="mb-3">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="....">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password">Password</label>
+                                <input type="text" class="form-control" id="password" name="password" placeholder="....">
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+    <script>
+        $(document).ready(function() {
+            $('#dataKaryawan').DataTable();
+        });
+    </script>
+    <?php if(session()->has('success')): ?>
+        <script>
+            toastr.success(`<?php echo e(session('success')); ?>`);
+        </script>
+    <?php endif; ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\webserver\htdocs\LARAVEL\movie_project\resources\views/admin/karyawan/karyawan.blade.php ENDPATH**/ ?>
